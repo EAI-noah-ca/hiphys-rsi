@@ -41,32 +41,32 @@ nav .right{justify-self:end}
 /* hero */
 .hero{text-align:center}
 .stage{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:96px 0 72px}
-.marquee{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:var(--mgap);--mgap:16px;--rowh:calc((100% - 3 * var(--mgap)) / 4);overflow:hidden}
+.marquee{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:var(--mgap);--mgap:9px;--rowh:calc((100% - 3 * var(--mgap)) / 4);overflow:hidden}
 .mrow{height:var(--rowh);flex:none;overflow:visible}
 .mtrack{display:flex;height:100%;width:max-content;animation:mq var(--dur) linear infinite}
 .mrow.rev .mtrack{animation-direction:reverse}
 .mtrack video{height:100%;aspect-ratio:8/1;width:auto;display:block;object-fit:cover;
-  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Crect x='0' y='0' width='93' height='100' rx='7'/%3E%3C/svg%3E");
-  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Crect x='0' y='0' width='93' height='100' rx='7'/%3E%3C/svg%3E");
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Crect x='0' y='0' width='96' height='100' rx='6'/%3E%3C/svg%3E");
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Crect x='0' y='0' width='96' height='100' rx='6'/%3E%3C/svg%3E");
   -webkit-mask-size:12.5% 100%;mask-size:12.5% 100%;-webkit-mask-repeat:repeat-x;mask-repeat:repeat-x}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (max-width:560px){.marquee{--mgap:10px}}
-.stage-veil{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,255,255,.88) 0%,rgba(255,255,255,.74) 50%,rgba(255,255,255,.55) 100%);backdrop-filter:blur(1.5px) saturate(.9);-webkit-backdrop-filter:blur(1.5px) saturate(.9)}
-/* dark hero variant (?hero=dark) */
-.hero-dark .stage{background:#0b0b0d}
-.hero-dark .stage-veil{background:radial-gradient(ellipse at center,rgba(8,8,10,.86) 0%,rgba(8,8,10,.70) 50%,rgba(8,8,10,.50) 100%)}
-.hero-dark .stage::after{background:linear-gradient(to bottom,rgba(255,255,255,0),#fff)}
-.hero-dark .stage h1{color:#fff}
-.hero-dark .stage h2,.hero-dark .stage .authors{color:#d2d2d7}
-.hero-dark .stage .authors .aff{color:#a1a1a6}
-.hero-dark .stage .authors .aff img{filter:brightness(0) invert(1)}
-.hero-dark .stage .venue{color:#ff5a5f}
-.hero-dark .stage .pill.line{border-color:#f5f5f7;color:#f5f5f7}
-.hero-dark .stage .pill.line:hover{background:#f5f5f7;color:#111}
-.hero-dark .stage .pill.soon{border-color:rgba(255,255,255,.25);color:#a1a1a6}
-.hero-dark nav.over{background:rgba(12,12,14,.6);border-color:transparent}
-.hero-dark nav.over .brand,.hero-dark nav.over ul a{color:#f5f5f7}
-.hero-dark nav.over .pill.fill{background:#f5f5f7;color:#111;border-color:#f5f5f7}
+@media (max-width:560px){.marquee{--mgap:6px}}
+.stage-veil{position:absolute;inset:0;backdrop-filter:blur(1.5px) saturate(.9);-webkit-backdrop-filter:blur(1.5px) saturate(.9)}
+/* dark hero */
+.stage{background:#0b0b0d}
+.stage-veil{background:radial-gradient(ellipse at center,rgba(8,8,10,.86) 0%,rgba(8,8,10,.70) 50%,rgba(8,8,10,.50) 100%)}
+.stage::after{background:linear-gradient(to bottom,rgba(255,255,255,0),#fff)}
+.hero .stage h1{color:#fff}
+.hero .stage h2,.stage .authors{color:#d2d2d7}
+.hero .stage .authors .aff{color:#a1a1a6}
+.hero .stage .authors .aff img{filter:brightness(0) invert(1)}
+.hero .stage .venue{color:#ff5a5f}
+.hero .stage .pill.line{border-color:#f5f5f7;color:#f5f5f7}
+.hero .stage .pill.line:hover{background:#f5f5f7;color:#111}
+.hero .stage .pill.soon{border-color:rgba(255,255,255,.25);color:#a1a1a6}
+nav.over{background:rgba(12,12,14,.6);border-color:transparent}
+nav.over .brand,nav.over ul a{color:#f5f5f7}
+nav.over .pill.fill{background:#f5f5f7;color:#111;border-color:#f5f5f7}
 .stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(to bottom,rgba(255,255,255,0),#fff);pointer-events:none}
 .stage-in{position:relative;z-index:1}
 .stage-cap{position:absolute;z-index:2;left:0;right:0;bottom:22px;font-size:12px;color:var(--mute);padding:0 16px}
@@ -647,8 +647,8 @@ car.addEventListener("mouseenter", () => { hovering = true; arm(); });
 car.addEventListener("mouseleave", () => { hovering = false; arm(); });
 new IntersectionObserver(es => { visible = carVisible = es[0].isIntersecting; syncVids(); arm(); }, {threshold: .35}).observe(car);
 place(true);
-if (new URLSearchParams(location.search).get("hero") === "dark") document.body.classList.add("hero-dark");
 const stageEl = document.getElementById("wall"), mvids = [...stageEl.querySelectorAll("video")];
+mvids.forEach(v => { v.playbackRate = 1.6; v.addEventListener("play", () => { v.playbackRate = 1.6; }); });
 if (reduce) mvids.forEach(v => { v.removeAttribute("autoplay"); v.pause(); });
 new IntersectionObserver(es => { const on = es[0].isIntersecting && !reduce; mvids.forEach(v => on ? v.play().catch(() => {}) : v.pause()); }, {threshold: .05}).observe(stageEl);
 document.addEventListener("visibilitychange", () => { pageHidden = document.hidden; arm(); });
