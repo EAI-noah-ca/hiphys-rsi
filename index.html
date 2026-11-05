@@ -308,6 +308,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     <div class="frame"><img id="heroFig" src="assets/fig/fig1.png" alt="Overview of the HiPhys-RSI framework: experience the task, design pipeline, analyze rollouts, iterative refinement; inference-time routing among pipelines and VLAs; per-task results versus the best VLA."></div>
     <p class="cap"><b>HiPhys-RSI overview.</b> Left: the agent acquires task experience and refines executable pipelines on training instances. Middle: at inference time it routes each task to a pipeline or a VLA policy. Right: per-task scores of our system compared with the best VLA.</p>
   </div>
+  <div class="wrap">
+    <div class="specs rv">
+      <div class="spec"><div class="k">Q-score (official)</div><div class="v red" data-count="0.683" data-dec="3">0.683</div></div>
+      <div class="spec"><div class="k">Full-task success</div><div class="v"><span data-count="48.2" data-dec="1">48.2</span><small>%</small></div></div>
+      <div class="spec"><div class="k">Q over 2nd place</div><div class="v"><span data-count="11" data-prefix="+">+11</span><small>%</small></div></div>
+    </div>
+  </div>
 </header>
 
 <section id="abstract">
@@ -324,11 +331,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <div class="wrap">
     <div class="head rv"><div class="eyebrow">Official leaderboard</div><h2>HiPhys-RSI leads the field</h2><p>2026 BEHAVIOR Challenge, 100 tasks, hidden test instances, official evaluator.</p></div>
     <div class="lb rv" id="lb">
-      <div class="specs lbspecs">
-      <div class="spec"><div class="k">Q-score (official)</div><div class="v red" data-count="0.683" data-dec="3">0.683</div></div>
-      <div class="spec"><div class="k">Full-task success</div><div class="v"><span data-count="48.2" data-dec="1">48.2</span><small>%</small></div></div>
-      <div class="spec"><div class="k">Q over 2nd place</div><div class="v"><span data-count="11" data-prefix="+">+11</span><small>%</small></div></div>
-    </div>
       <div class="lbtop">
         <span class="t">Top 6 verified entries</span>
         <div class="tog" role="tablist"><button class="on" data-k="q">Q-score</button><button data-k="sr">Success rate</button></div>
