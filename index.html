@@ -55,7 +55,7 @@ nav .right{justify-self:end}
 .cap b{color:var(--ink);font-weight:600}
 
 /* key numbers */
-.specs{display:grid;grid-template-columns:repeat(4,1fr);margin:72px auto 0;max-width:1080px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.specs{display:grid;grid-template-columns:repeat(3,1fr);margin:72px auto 0;max-width:900px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .spec{padding:30px 22px;text-align:center;border-left:1px solid var(--line)}
 .spec:first-child{border-left:0}
 .spec .k{font-size:13px;color:var(--mute);margin-bottom:8px}
@@ -208,9 +208,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 @media (max-width:900px){
   nav ul{display:none}
   nav .wrap{grid-template-columns:auto 1fr}
-  .specs{grid-template-columns:repeat(2,1fr)}
-  .spec:nth-child(3){border-left:0}
-  .spec:nth-child(n+3){border-top:1px solid var(--line)}
   .steps,.kv{grid-template-columns:repeat(2,1fr)}
   .kv div:nth-child(3){border-left:0;padding-left:0}
   .pillars,.finds,.gray{grid-template-columns:1fr}
@@ -275,7 +272,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       <div class="spec"><div class="k">Q-score (official)</div><div class="v red" data-count="0.683" data-dec="3">0.683</div></div>
       <div class="spec"><div class="k">Full-task success</div><div class="v"><span data-count="48.2" data-dec="1">48.2</span><small>%</small></div></div>
       <div class="spec"><div class="k">Q over 2nd place</div><div class="v"><span data-count="11" data-prefix="+">+11</span><small>%</small></div></div>
-      <div class="spec"><div class="k">Household tasks</div><div class="v"><span data-count="100">100</span><small>/ 100</small></div></div>
     </div>
   </div>
 </header>
