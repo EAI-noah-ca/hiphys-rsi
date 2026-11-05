@@ -133,10 +133,10 @@ section.tint + section{padding-top:110px}
 .find{border-top:2px solid var(--ink);padding-top:20px}
 .find h3{font-size:18px;font-weight:600;margin-bottom:6px}
 .find p{font-size:15px;color:var(--ink2)}
-.wall{position:relative;max-width:1080px;margin:0 auto;border-radius:22px;overflow:hidden;background:#111;aspect-ratio:4/3}
+.wall{position:relative;max-width:1180px;margin:0 auto;border-radius:22px;overflow:hidden;background:#111;aspect-ratio:6/5}
 .wall video{width:100%;height:100%;object-fit:cover;display:block}
-.wall .lbls{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);pointer-events:none}
-.wall .lbls span{align-self:end;justify-self:start;margin:10px;font-size:12px;color:#fff;background:rgba(0,0,0,.55);padding:3px 9px;border-radius:99px;backdrop-filter:blur(6px)}
+.wall .lbls{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(5,1fr);pointer-events:none}
+.wall .lbls span{align-self:end;justify-self:start;margin:8px;font-size:11px;line-height:1.3;max-width:calc(100% - 16px);color:#fff;background:rgba(0,0,0,.55);padding:3px 9px;border-radius:99px;backdrop-filter:blur(6px)}
 .wallcap{max-width:1080px;margin:14px auto 0;font-size:14px;color:var(--mute);text-align:center}
 .guards{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
 .guard{background:#fff;border-radius:18px;padding:26px}
@@ -237,9 +237,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <nav id="nav"><div class="wrap">
   <a class="brand" href="#top">HiPhys-RSI</a>
   <ul>
+    <li><a href="#tasks">Tasks</a></li>
     <li><a href="#abstract">Abstract</a></li>
     <li><a href="#leaderboard">Leaderboard</a></li>
-    <li><a href="#tasks">Tasks</a></li>
     <li><a href="#method">Method</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#cases">Cases</a></li>
@@ -276,6 +276,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   </div>
 </header>
 
+<section id="tasks">
+  <div class="wrap">
+    <div class="head rv"><div class="eyebrow">100 household tasks</div><h2>One frozen agent, a hundred household tasks</h2><p>Each task runs autonomously on the official evaluator. Thirty of the submission rollouts, each sped up to fit 12 seconds.</p></div>
+    <div class="wall rv" id="wall">
+      <video src="assets/vid/wall.mp4" poster="assets/vid/wall.jpg" muted loop playsinline preload="metadata" aria-label="Thirty robot rollouts from different BEHAVIOR-1K household tasks, playing simultaneously"></video>
+      <div class="lbls"><span>picking up trash</span><span>putting away Halloween decorations</span><span>can meat</span><span>picking up toys</span><span>set up a coffee station in your kitchen</span><span>carrying in groceries</span><span>bringing water</span><span>outfit a basic toolbox</span><span>putting shoes on rack</span><span>clearing food from table into fridge</span><span>clean boxing gloves</span><span>wash dog toys</span><span>attach a camera to a tripod</span><span>make microwave popcorn</span><span>cook bacon</span><span>cook a brisket</span><span>tidying living room</span><span>re-shelving library books</span><span>sweeping garage</span><span>scrubbing bathroom floor</span><span>installing smoke detectors</span><span>unloading the car</span><span>boxing food after dinner</span><span>vacuuming floors</span><span>cook a frozen pie</span><span>installing a modem</span><span>polishing shoes</span><span>composting waste</span><span>clean a keyboard</span><span>sorting books on shelf</span></div>
+    </div>
+    <p class="wallcap">Robot head-camera view. Submission rollouts on the public evaluation instances (301–310), as written by the unmodified official evaluator; 5–50× speed.</p>
+  </div>
+</section>
+
 <section id="abstract">
   <div class="wrap">
     <div class="head rv"><div class="eyebrow">Abstract</div><h2>Scaling through executable structure</h2></div>
@@ -300,17 +311,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         <span>No other entry, verified or self-reported, scores higher; the best self-reported Q is 0.514. <a href="https://huggingface.co/spaces/behavior-1k/2026-challenge-leaderboard" target="_blank" rel="noopener">Source ↗</a></span>
       </div>
     </div>
-  </div>
-</section>
-
-<section id="tasks">
-  <div class="wrap">
-    <div class="head rv"><div class="eyebrow">100 household tasks</div><h2>One frozen agent, a hundred household tasks</h2><p>Each task runs autonomously on the official evaluator. Twelve of the submission rollouts, sped up to fit 12 seconds each.</p></div>
-    <div class="wall rv" id="wall">
-      <video src="assets/vid/wall.mp4" poster="assets/vid/wall.jpg" muted loop playsinline preload="metadata" aria-label="Twelve robot rollouts from different BEHAVIOR-1K household tasks, playing simultaneously"></video>
-      <div class="lbls"><span>picking up trash</span><span>picking up toys</span><span>carrying in groceries</span><span>putting shoes on rack</span><span>attach a camera to a tripod</span><span>cook a brisket</span><span>scrubbing bathroom floor</span><span>boxing food after dinner</span><span>cook a frozen pie</span><span>polishing shoes</span><span>composting waste</span><span>sorting books on shelf</span></div>
-    </div>
-    <p class="wallcap">Robot head-camera view. Submission rollouts on the public evaluation instances (301–310), as written by the unmodified official evaluator; 5–40× speed.</p>
   </div>
 </section>
 
