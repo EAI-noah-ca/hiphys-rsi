@@ -39,7 +39,13 @@ nav .right{justify-self:end}
 #progress{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--accent)}
 
 /* hero */
-.hero{padding:136px 0 0;text-align:center}
+.hero{text-align:center}
+.stage{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:96px 0 72px}
+.stage-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
+.stage-veil{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,255,255,.90) 0%,rgba(255,255,255,.80) 45%,rgba(255,255,255,.66) 100%);backdrop-filter:blur(2px) saturate(.85);-webkit-backdrop-filter:blur(2px) saturate(.85)}
+.stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(to bottom,rgba(255,255,255,0),#fff);pointer-events:none}
+.stage-in{position:relative;z-index:1}
+.stage-cap{position:absolute;z-index:2;left:0;right:0;bottom:22px;font-size:12px;color:var(--mute);padding:0 16px}
 .venue{display:inline-flex;align-items:center;gap:12px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .venue::before,.venue::after{content:"";width:28px;height:1px;background:currentColor;opacity:.5}
 .hero h1{font-size:clamp(44px,7.4vw,92px);font-weight:600;letter-spacing:-.035em;line-height:1.02;margin:22px 0 14px}
@@ -237,7 +243,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <nav id="nav"><div class="wrap">
   <a class="brand" href="#top">HiPhys-RSI</a>
   <ul>
-    <li><a href="#tasks">Tasks</a></li>
     <li><a href="#abstract">Abstract</a></li>
     <li><a href="#leaderboard">Leaderboard</a></li>
     <li><a href="#method">Method</a></li>
@@ -249,7 +254,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 </div><div id="progress"></div></nav>
 
 <header class="hero" id="top">
-  <div class="wrap">
+  <div class="stage" id="wall">
+    <video class="stage-bg" src="assets/vid/wall.mp4" poster="assets/vid/wall.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+    <div class="stage-veil"></div>
+  <div class="wrap stage-in">
     <div class="venue a a1">2026 BEHAVIOR Challenge · 1st Place</div>
     <h1 class="a a2">Scaling by Structure</h1>
     <h2 class="a a3">What forms can scaling take in embodied AI?</h2>
@@ -263,6 +271,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       <a class="pill line" href="#bibtex">BibTeX</a>
     </div>
   </div>
+    <p class="stage-cap">Background: 30 of our submission rollouts (robot head camera, public evaluation instances 301–310, official evaluator), 5–50× speed.</p>
+  </div>
   <div class="heroimg rv">
     <div class="frame"><img id="heroFig" src="assets/fig/fig1.png" alt="Overview of the HiPhys-RSI framework: experience the task, design pipeline, analyze rollouts, iterative refinement; inference-time routing among pipelines and VLAs; per-task results versus the best VLA."></div>
     <p class="cap"><b>HiPhys-RSI overview.</b> Left: the agent acquires task experience and refines executable pipelines on training instances. Middle: at inference time it routes each task to a pipeline or a VLA policy. Right: per-task scores of our system compared with the best VLA.</p>
@@ -275,17 +285,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     </div>
   </div>
 </header>
-
-<section id="tasks">
-  <div class="wrap">
-    <div class="head rv"><div class="eyebrow">100 household tasks</div><h2>One frozen agent, a hundred household tasks</h2><p>Each task runs autonomously on the official evaluator. Thirty of the submission rollouts, each sped up to fit 12 seconds.</p></div>
-    <div class="wall rv" id="wall">
-      <video src="assets/vid/wall.mp4" poster="assets/vid/wall.jpg" muted loop playsinline preload="metadata" aria-label="Thirty robot rollouts from different BEHAVIOR-1K household tasks, playing simultaneously"></video>
-      <div class="lbls"><span>picking up trash</span><span>putting away Halloween decorations</span><span>can meat</span><span>picking up toys</span><span>set up a coffee station in your kitchen</span><span>carrying in groceries</span><span>bringing water</span><span>outfit a basic toolbox</span><span>putting shoes on rack</span><span>clearing food from table into fridge</span><span>clean boxing gloves</span><span>wash dog toys</span><span>attach a camera to a tripod</span><span>make microwave popcorn</span><span>cook bacon</span><span>cook a brisket</span><span>tidying living room</span><span>re-shelving library books</span><span>sweeping garage</span><span>scrubbing bathroom floor</span><span>installing smoke detectors</span><span>unloading the car</span><span>boxing food after dinner</span><span>vacuuming floors</span><span>cook a frozen pie</span><span>installing a modem</span><span>polishing shoes</span><span>composting waste</span><span>clean a keyboard</span><span>sorting books on shelf</span></div>
-    </div>
-    <p class="wallcap">Robot head-camera view. Submission rollouts on the public evaluation instances (301–310), as written by the unmodified official evaluator; 5–50× speed.</p>
-  </div>
-</section>
 
 <section id="abstract">
   <div class="wrap">
@@ -620,6 +619,7 @@ car.addEventListener("mouseleave", () => { hovering = false; arm(); });
 new IntersectionObserver(es => { visible = carVisible = es[0].isIntersecting; syncVids(); arm(); }, {threshold: .35}).observe(car);
 place(true);
 const wallV = document.querySelector("#wall video");
+if (reduce) { wallV.removeAttribute("autoplay"); wallV.pause(); }
 new IntersectionObserver(es => { if (es[0].isIntersecting && !reduce) wallV.play().catch(() => {}); else wallV.pause(); }, {threshold: .2}).observe(wallV);
 document.addEventListener("visibilitychange", () => { pageHidden = document.hidden; arm(); });
 
