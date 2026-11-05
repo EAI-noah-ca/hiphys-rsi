@@ -161,6 +161,7 @@ section.tint + section{padding-top:110px}
 .track{display:flex;gap:24px;transition:transform .7s cubic-bezier(.2,.7,.2,1);will-change:transform}
 .slide{flex:0 0 min(76vw,780px);opacity:.35;transition:opacity .6s}
 .slide.on{opacity:1}
+.slide.snap{transition:none}
 .slide .im{background:#111;border-radius:18px;overflow:hidden;aspect-ratio:3/2;position:relative}
 .slide .im video{width:100%;height:100%;object-fit:cover;display:block}
 .slide .im .meta{position:absolute;left:12px;bottom:12px;font-size:12px;color:#fff;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:99px;backdrop-filter:blur(6px)}
@@ -512,56 +513,73 @@ const CASES = [
   {id:92, inst:309, sp:4, n:"installing a scanner", h:"Switch on, then slide", p:"The robot switches the scanner on while it rests on the desk and checks that the button turns green. It then slides the scanner to the laptop with a tilted hand and sideways base motion, or picks it up and carries it when sliding won't work.", alt:"Task 92: sliding the scanner toward the laptop"}
 ];
 const track = document.getElementById("track"), car = document.getElementById("car");
-track.innerHTML = CASES.map(c => `<article class="slide"><div class="im"><video src="assets/vid/case${c.id}.mp4" poster="assets/vid/case${c.id}.jpg" muted playsinline preload="none" aria-label="${c.alt}"></video><span class="meta">Instance ${c.inst} · ${c.sp}× speed</span></div><div class="c"><div><div class="tag">Task ${c.id} · ${c.n}</div><h3>${c.h}</h3></div><p>${c.p}</p></div></article>`).join("");
+/* endless loop: three copies of the slides; we stay in the middle copy and jump silently after each move */
+const N = CASES.length;
+const slideHTML = c => `<article class="slide"><div class="im"><video src="assets/vid/case${c.id}.mp4" poster="assets/vid/case${c.id}.jpg" muted playsinline preload="none" aria-label="${c.alt}"></video><span class="meta">Instance ${c.inst} · ${c.sp}× speed</span></div><div class="c"><div><div class="tag">Task ${c.id} · ${c.n}</div><h3>${c.h}</h3></div><p>${c.p}</p></div></article>`;
+track.innerHTML = [0, 1, 2].map(() => CASES.map(slideHTML).join("")).join("");
 const slides = [...track.children], lnI = document.getElementById("lnI"), cnt = document.getElementById("cnt");
-let si = 0;
-function place() {
-  const s = slides[si];
+slides.forEach((x, k) => { if (k < N || k >= 2 * N) x.setAttribute("aria-hidden", "true"); });
+const mod = (a, n) => ((a % n) + n) % n;
+let pos = N, si = 0;
+function place(instant) {
+  si = mod(pos, N);
+  const s = slides[pos];
+  if (instant) track.style.transition = "none";
   track.style.transform = `translateX(${(car.clientWidth - s.offsetWidth) / 2 - s.offsetLeft}px)`;
-  slides.forEach((x, k) => x.classList.toggle("on", k === si));
-  lnI.style.width = (100 / slides.length) + "%"; lnI.style.left = (si * 100 / slides.length) + "%";
-  cnt.textContent = String(si + 1).padStart(2, "0") + " / " + String(slides.length).padStart(2, "0");
+  if (instant) { void track.offsetWidth; track.style.transition = ""; }
+  slides.forEach((x, k) => x.classList.toggle("on", k === pos));
+  lnI.style.width = (100 / N) + "%"; lnI.style.left = (si * 100 / N) + "%";
+  cnt.textContent = String(si + 1).padStart(2, "0") + " / " + String(N).padStart(2, "0");
   syncVids();
 }
+/* after a move lands outside the middle copy, re-centre on the equivalent slide without animation */
+track.addEventListener("transitionend", e => {
+  if (e.target !== track || (pos >= N && pos < 2 * N)) return;
+  const v = slides[pos].querySelector("video"), t = v.currentTime, playing = !v.paused;
+  pos = N + mod(pos, N);
+  const v2 = slides[pos].querySelector("video");
+  if (playing) { v2.preload = "auto"; v2.currentTime = t; }
+  slides.forEach(x => x.classList.add("snap"));
+  place(true);
+  requestAnimationFrame(() => slides.forEach(x => x.classList.remove("snap")));
+});
 let carVisible = false;
 function syncVids() {
   slides.forEach((x, k) => {
     const v = x.querySelector("video");
-    if (k === si && carVisible && !reduce) { v.preload = "auto"; if (v.paused) { v.currentTime = 0; v.play().catch(() => {}); } }
-    else if (!v.paused) v.pause();
+    if (k === pos && carVisible && !reduce) { v.preload = "auto"; if (v.paused) v.play().catch(() => {}); }
+    else if (!v.paused) { v.pause(); v.currentTime = 0; }
   });
 }
-function go(i) { si = (i + slides.length) % slides.length; place(); }
-document.getElementById("prev").onclick = () => go(si - 1);
-document.getElementById("next").onclick = () => go(si + 1);
-slides.forEach((s, k) => s.onclick = () => { if (k !== si) go(k); });
+function step(d) { pos += d; place(); }
 let tx = null;
 car.addEventListener("touchstart", e => tx = e.touches[0].clientX, {passive: true});
-car.addEventListener("touchend", e => { if (tx === null) return; const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 40) { go(si + (d < 0 ? 1 : -1)); if (typeof arm === 'function') arm(); } tx = null; });
-place();
-/* autoplay: advance every DUR ms, fill the active segment, pause on hover / off-screen / button */
+car.addEventListener("touchend", e => { if (tx === null) return; const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 40) { step(d < 0 ? 1 : -1); arm(); } tx = null; });
+/* autoplay: advance when the active clip ends; fill the active segment; pause on hover / off-screen / button */
 const lnB = document.getElementById("lnB"), playBtn = document.getElementById("play");
 let auto = !reduce, timer = null, visible = false, hovering = false, pageHidden = false;
-function curDur() { const d = slides[si].querySelector("video").duration; return (isFinite(d) && d > 0 ? Math.min(Math.max(d, 6), 22) : 10) * 1000; }
+function curDur() { const d = slides[pos].querySelector("video").duration; return (isFinite(d) && d > 0 ? Math.min(Math.max(d, 6), 22) : 10) * 1000; }
 function arm() {
   clearTimeout(timer); lnB.classList.remove("run", "full"); void lnB.offsetWidth;
   if (!(auto && visible && !hovering && !pageHidden)) { lnB.classList.add("full"); return; }
-  const v = slides[si].querySelector("video");
-  if (!(isFinite(v.duration) && v.duration > 0)) v.addEventListener("loadedmetadata", () => { if (slides[si].querySelector("video") === v) arm(); }, {once: true});
+  const v = slides[pos].querySelector("video");
+  if (!(isFinite(v.duration) && v.duration > 0)) v.addEventListener("loadedmetadata", () => { if (slides[pos].querySelector("video") === v) arm(); }, {once: true});
   const D = curDur();
   lnB.parentElement.parentElement.style.setProperty("--dur", D + "ms");
   lnB.classList.add("run");
-  timer = setTimeout(() => { si = (si + 1) % slides.length; place(); arm(); }, D);
+  timer = setTimeout(() => { step(1); arm(); }, D);
 }
-const goUser = i => { go(i); arm(); };
-document.getElementById("prev").onclick = () => goUser(si - 1);
-document.getElementById("next").onclick = () => goUser(si + 1);
-slides.forEach((s, k) => s.onclick = () => { if (k !== si) goUser(k); });
+document.getElementById("prev").onclick = () => { step(-1); arm(); };
+document.getElementById("next").onclick = () => { step(1); arm(); };
+slides.forEach((x, k) => x.onclick = () => { if (k !== pos) { step(k - pos); arm(); } });
+/* loop each clip while the carousel waits (hover / paused) */
+slides.forEach(x => { const v = x.querySelector("video"); v.loop = true; });
 playBtn.onclick = () => { auto = !auto; playBtn.textContent = auto ? "❚❚" : "▶"; playBtn.setAttribute("aria-label", auto ? "Pause autoplay" : "Start autoplay"); arm(); };
 if (reduce) { playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "Start autoplay"); }
 car.addEventListener("mouseenter", () => { hovering = true; arm(); });
 car.addEventListener("mouseleave", () => { hovering = false; arm(); });
 new IntersectionObserver(es => { visible = carVisible = es[0].isIntersecting; syncVids(); arm(); }, {threshold: .35}).observe(car);
+place(true);
 const wallV = document.querySelector("#wall video");
 new IntersectionObserver(es => { if (es[0].isIntersecting && !reduce) wallV.play().catch(() => {}); else wallV.pause(); }, {threshold: .2}).observe(wallV);
 document.addEventListener("visibilitychange", () => { pageHidden = document.hidden; arm(); });
@@ -579,7 +597,7 @@ function frame() {
 }
 let tk = false;
 addEventListener("scroll", () => { if (!tk) { tk = true; requestAnimationFrame(() => { frame(); tk = false; }); } }, {passive: true});
-addEventListener("resize", () => { frame(); place(); }); frame();
+addEventListener("resize", () => { frame(); place(true); }); frame();
 </script>
 </body>
 </html>
