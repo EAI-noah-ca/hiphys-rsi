@@ -133,6 +133,11 @@ section.tint + section{padding-top:110px}
 .find{border-top:2px solid var(--ink);padding-top:20px}
 .find h3{font-size:18px;font-weight:600;margin-bottom:6px}
 .find p{font-size:15px;color:var(--ink2)}
+.wall{position:relative;max-width:1080px;margin:0 auto;border-radius:22px;overflow:hidden;background:#111;aspect-ratio:4/3}
+.wall video{width:100%;height:100%;object-fit:cover;display:block}
+.wall .lbls{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);pointer-events:none}
+.wall .lbls span{align-self:end;justify-self:start;margin:10px;font-size:12px;color:#fff;background:rgba(0,0,0,.55);padding:3px 9px;border-radius:99px;backdrop-filter:blur(6px)}
+.wallcap{max-width:1080px;margin:14px auto 0;font-size:14px;color:var(--mute);text-align:center}
 .guards{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
 .guard{background:#fff;border-radius:18px;padding:26px}
 .guard .ic{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;margin-bottom:16px}
@@ -154,16 +159,16 @@ section.tint + section{padding-top:110px}
 /* peek carousel (cases) */
 .car{position:relative;overflow:hidden}
 .track{display:flex;gap:24px;transition:transform .7s cubic-bezier(.2,.7,.2,1);will-change:transform}
-.slide{flex:0 0 min(76vw,920px);opacity:.35;transition:opacity .6s}
+.slide{flex:0 0 min(76vw,780px);opacity:.35;transition:opacity .6s}
 .slide.on{opacity:1}
-.slide .im{background:var(--bg2);border-radius:18px;overflow:hidden;aspect-ratio:3/1}
-.slide .im img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
-.slide.on .im img{transform:scale(1.02)}
+.slide .im{background:#111;border-radius:18px;overflow:hidden;aspect-ratio:3/2;position:relative}
+.slide .im video{width:100%;height:100%;object-fit:cover;display:block}
+.slide .im .meta{position:absolute;left:12px;bottom:12px;font-size:12px;color:#fff;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:99px;backdrop-filter:blur(6px)}
 .slide .c{display:grid;grid-template-columns:1fr 2fr;gap:28px;padding:24px 4px 0}
 .slide .tag{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .slide h3{font-size:22px;font-weight:600;letter-spacing:-.015em;margin-top:4px;line-height:1.25}
 .slide p{font-size:15px;color:var(--ink2)}
-.carbar{display:flex;align-items:center;gap:20px;max-width:920px;margin:34px auto 0;padding:0 24px}
+.carbar{display:flex;align-items:center;gap:20px;max-width:780px;margin:34px auto 0;padding:0 24px}
 .carbar .ln{flex:1;height:2px;background:var(--line);position:relative}
 .carbar .ln i{position:absolute;left:0;top:0;height:100%;background:#c9ccd2;transition:left .6s,width .6s;overflow:hidden}
 .carbar .ln i b{position:absolute;left:0;top:0;height:100%;width:0;background:var(--ink)}
@@ -211,6 +216,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .slide .c{grid-template-columns:1fr;gap:8px}
 }
 @media (max-width:560px){
+  .wall .lbls{display:none}
   .wrap,.heroimg{padding:0 16px}
   body{font-size:16px}
   .steps,.guards{grid-template-columns:1fr}
@@ -233,6 +239,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <ul>
     <li><a href="#abstract">Abstract</a></li>
     <li><a href="#leaderboard">Leaderboard</a></li>
+    <li><a href="#tasks">Tasks</a></li>
     <li><a href="#method">Method</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#cases">Cases</a></li>
@@ -294,6 +301,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         <span>No other entry, verified or self-reported, scores higher; the best self-reported Q is 0.514. <a href="https://huggingface.co/spaces/behavior-1k/2026-challenge-leaderboard" target="_blank" rel="noopener">Source ↗</a></span>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="tasks">
+  <div class="wrap">
+    <div class="head rv"><div class="eyebrow">100 household tasks</div><h2>One frozen agent, a hundred household tasks</h2><p>Each task runs autonomously on the official evaluator. Twelve of the submission rollouts, sped up to fit 12 seconds each.</p></div>
+    <div class="wall rv" id="wall">
+      <video src="assets/vid/wall.mp4" poster="assets/vid/wall.jpg" muted loop playsinline preload="metadata" aria-label="Twelve robot rollouts from different BEHAVIOR-1K household tasks, playing simultaneously"></video>
+      <div class="lbls"><span>picking up trash</span><span>picking up toys</span><span>carrying in groceries</span><span>putting shoes on rack</span><span>attach a camera to a tripod</span><span>cook a brisket</span><span>scrubbing bathroom floor</span><span>boxing food after dinner</span><span>cook a frozen pie</span><span>polishing shoes</span><span>composting waste</span><span>sorting books on shelf</span></div>
+    </div>
+    <p class="wallcap">Robot head-camera view. Submission rollouts on the public evaluation instances (301–310), as written by the unmodified official evaluator; 5–40× speed.</p>
   </div>
 </section>
 
@@ -486,15 +504,15 @@ items.forEach(it => it.querySelector("button").onclick = () => {
 
 /* case carousel (centred slide, neighbours peeking) */
 const CASES = [
-  {id:96, n:"cook broccolini", h:"Grab the rim, skip the detour", p:"If the pan's handle points away or sideways, the robot grasps the near rim instead, lifts the pan level and carries it to the stove. This avoids walking around the kitchen island to reach the handle.", alt:"Task 96: grasping a frying pan by its rim"},
-  {id:74, n:"carrying out garden furniture", h:"Approach from the wheel side", p:"If walls or furniture block the wheelbarrow handles, the robot grasps the front rim of the tub with both hands, checks that the lift succeeded and wheels it out.", alt:"Task 74: lifting a wheelbarrow by its tub rim"},
-  {id:38, n:"spraying for bugs", h:"Tip it over first", p:"Grasping the upright sprayer risks collisions and leaves it held at an awkward angle. The robot tips it onto its side first, so it can grasp the sprayer and orient it to switch it on.", alt:"Task 38: tipping the sprayer on its side before grasping"},
-  {id:58, n:"stacking wood", h:"Let gravity hold it", p:"The robot places each log perpendicular to the one below and releases it slightly toward itself. One end rests on the supporting log and the other on the ground, so the log cannot roll off.", alt:"Task 58: placing a log perpendicular to the supporting log"},
-  {id:81, n:"packing meal for delivery", h:"Reorder the work", p:"The robot stands three empty paper bags upright inside the box, then drops a burger into each. The box holds the bags open, so the robot never needs to hold one while filling it.", alt:"Task 81: placing paper bags in the box before filling them"},
-  {id:92, n:"installing a scanner", h:"Switch on, then slide", p:"The robot switches the scanner on while it rests on the desk and checks that the button turns green. It then slides the scanner to the laptop with a tilted hand and sideways base motion, or picks it up and carries it when sliding won't work.", alt:"Task 92: sliding the scanner toward the laptop"}
+  {id:96, inst:302, sp:4, n:"cook broccolini", h:"Grab the rim, skip the detour", p:"If the pan's handle points away or sideways, the robot grasps the near rim instead, lifts the pan level and carries it to the stove. This avoids walking around the kitchen island to reach the handle.", alt:"Task 96: grasping a frying pan by its rim"},
+  {id:74, inst:305, sp:4, n:"carrying out garden furniture", h:"Approach from the wheel side", p:"If walls or furniture block the wheelbarrow handles, the robot grasps the front rim of the tub with both hands, checks that the lift succeeded and wheels it out.", alt:"Task 74: lifting a wheelbarrow by its tub rim"},
+  {id:38, inst:310, sp:2, n:"spraying for bugs", h:"Tip it over first", p:"Grasping the upright sprayer risks collisions and leaves it held at an awkward angle. The robot tips it onto its side first, so it can grasp the sprayer and orient it to switch it on.", alt:"Task 38: tipping the sprayer on its side before grasping"},
+  {id:58, inst:302, sp:2, n:"stacking wood", h:"Let gravity hold it", p:"The robot places each log perpendicular to the one below and releases it slightly toward itself. One end rests on the supporting log and the other on the ground, so the log cannot roll off.", alt:"Task 58: placing a log perpendicular to the supporting log"},
+  {id:81, inst:306, sp:6, n:"packing meal for delivery", h:"Reorder the work", p:"The robot stands three empty paper bags upright inside the box, then drops a burger into each. The box holds the bags open, so the robot never needs to hold one while filling it.", alt:"Task 81: placing paper bags in the box before filling them"},
+  {id:92, inst:309, sp:4, n:"installing a scanner", h:"Switch on, then slide", p:"The robot switches the scanner on while it rests on the desk and checks that the button turns green. It then slides the scanner to the laptop with a tilted hand and sideways base motion, or picks it up and carries it when sliding won't work.", alt:"Task 92: sliding the scanner toward the laptop"}
 ];
 const track = document.getElementById("track"), car = document.getElementById("car");
-track.innerHTML = CASES.map(c => `<article class="slide"><div class="im"><img src="assets/fig/case_task${c.id}.jpg" alt="${c.alt}" loading="lazy"></div><div class="c"><div><div class="tag">Task ${c.id} · ${c.n}</div><h3>${c.h}</h3></div><p>${c.p}</p></div></article>`).join("");
+track.innerHTML = CASES.map(c => `<article class="slide"><div class="im"><video src="assets/vid/case${c.id}.mp4" poster="assets/vid/case${c.id}.jpg" muted playsinline preload="none" aria-label="${c.alt}"></video><span class="meta">Instance ${c.inst} · ${c.sp}× speed</span></div><div class="c"><div><div class="tag">Task ${c.id} · ${c.n}</div><h3>${c.h}</h3></div><p>${c.p}</p></div></article>`).join("");
 const slides = [...track.children], lnI = document.getElementById("lnI"), cnt = document.getElementById("cnt");
 let si = 0;
 function place() {
@@ -503,6 +521,15 @@ function place() {
   slides.forEach((x, k) => x.classList.toggle("on", k === si));
   lnI.style.width = (100 / slides.length) + "%"; lnI.style.left = (si * 100 / slides.length) + "%";
   cnt.textContent = String(si + 1).padStart(2, "0") + " / " + String(slides.length).padStart(2, "0");
+  syncVids();
+}
+let carVisible = false;
+function syncVids() {
+  slides.forEach((x, k) => {
+    const v = x.querySelector("video");
+    if (k === si && carVisible && !reduce) { v.preload = "auto"; if (v.paused) { v.currentTime = 0; v.play().catch(() => {}); } }
+    else if (!v.paused) v.pause();
+  });
 }
 function go(i) { si = (i + slides.length) % slides.length; place(); }
 document.getElementById("prev").onclick = () => go(si - 1);
@@ -513,14 +540,18 @@ car.addEventListener("touchstart", e => tx = e.touches[0].clientX, {passive: tru
 car.addEventListener("touchend", e => { if (tx === null) return; const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 40) { go(si + (d < 0 ? 1 : -1)); if (typeof arm === 'function') arm(); } tx = null; });
 place();
 /* autoplay: advance every DUR ms, fill the active segment, pause on hover / off-screen / button */
-const DUR = 5500, lnB = document.getElementById("lnB"), playBtn = document.getElementById("play");
+const lnB = document.getElementById("lnB"), playBtn = document.getElementById("play");
 let auto = !reduce, timer = null, visible = false, hovering = false, pageHidden = false;
-lnB.parentElement.parentElement.style.setProperty("--dur", DUR + "ms");
+function curDur() { const d = slides[si].querySelector("video").duration; return (isFinite(d) && d > 0 ? Math.min(Math.max(d, 6), 22) : 10) * 1000; }
 function arm() {
   clearTimeout(timer); lnB.classList.remove("run", "full"); void lnB.offsetWidth;
   if (!(auto && visible && !hovering && !pageHidden)) { lnB.classList.add("full"); return; }
+  const v = slides[si].querySelector("video");
+  if (!(isFinite(v.duration) && v.duration > 0)) v.addEventListener("loadedmetadata", () => { if (slides[si].querySelector("video") === v) arm(); }, {once: true});
+  const D = curDur();
+  lnB.parentElement.parentElement.style.setProperty("--dur", D + "ms");
   lnB.classList.add("run");
-  timer = setTimeout(() => { si = (si + 1) % slides.length; place(); arm(); }, DUR);
+  timer = setTimeout(() => { si = (si + 1) % slides.length; place(); arm(); }, D);
 }
 const goUser = i => { go(i); arm(); };
 document.getElementById("prev").onclick = () => goUser(si - 1);
@@ -530,7 +561,9 @@ playBtn.onclick = () => { auto = !auto; playBtn.textContent = auto ? "❚❚" : 
 if (reduce) { playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "Start autoplay"); }
 car.addEventListener("mouseenter", () => { hovering = true; arm(); });
 car.addEventListener("mouseleave", () => { hovering = false; arm(); });
-new IntersectionObserver(es => { visible = es[0].isIntersecting; arm(); }, {threshold: .35}).observe(car);
+new IntersectionObserver(es => { visible = carVisible = es[0].isIntersecting; syncVids(); arm(); }, {threshold: .35}).observe(car);
+const wallV = document.querySelector("#wall video");
+new IntersectionObserver(es => { if (es[0].isIntersecting && !reduce) wallV.play().catch(() => {}); else wallV.pause(); }, {threshold: .2}).observe(wallV);
 document.addEventListener("visibilitychange", () => { pageHidden = document.hidden; arm(); });
 
 /* nav, progress, active link, hero figure scale */
