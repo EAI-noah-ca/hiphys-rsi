@@ -231,8 +231,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <nav id="nav"><div class="wrap">
   <a class="brand" href="#top">HiPhys-RSI</a>
   <ul>
-    <li><a href="#abstract">Abstract</a></li>
     <li><a href="#leaderboard">Leaderboard</a></li>
+    <li><a href="#abstract">Abstract</a></li>
     <li><a href="#method">Method</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#cases">Cases</a></li>
@@ -270,16 +270,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   </div>
 </header>
 
-<section id="abstract">
-  <div class="wrap">
-    <div class="head rv"><div class="eyebrow">Abstract</div><h2>Scaling through executable structure</h2></div>
-    <div class="abstract rv">
-      <span class="q">Can embodied intelligence scale through the construction and refinement of executable structure, rather than only through data, parameters and compute?</span>
-      Robotics already has strong tools: geometric reasoning, task and motion planning, SLAM, perception and feedback control. The bottleneck is the engineering needed to compose and adapt them for every new task. We present <b>HiPhys-RSI</b> (hierarchical physical recursive self-improvement), in which a <b>frozen VLM coding agent</b> automates that work. It examines execution feedback and videos, diagnoses failures and revises the code. Useful revisions are kept as reusable procedures and tools. The coding agent and its VLM backbone are never trained; all improvement is stored in executable procedures, tool compositions and structured knowledge. On the 2026 BEHAVIOR Challenge, the system ranks <b>first across all 100 BEHAVIOR-1K household tasks</b>, with a verified Q-score of <b>0.683</b> and a full-task success rate of <b>48.2%</b> on the hidden test instances.
-    </div>
-  </div>
-</section>
-
 <section id="leaderboard" class="tint">
   <div class="wrap">
     <div class="head rv"><div class="eyebrow">Official leaderboard</div><h2>First on the verified leaderboard</h2><p>2026 BEHAVIOR Challenge, 100 tasks, hidden test instances, official evaluator.</p></div>
@@ -293,6 +283,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         <span class="gap" id="gap"></span>
         <span>No other entry, verified or self-reported, scores higher; the best self-reported Q is 0.514. <a href="https://huggingface.co/spaces/behavior-1k/2026-challenge-leaderboard" target="_blank" rel="noopener">Source ↗</a></span>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="abstract">
+  <div class="wrap">
+    <div class="head rv"><div class="eyebrow">Abstract</div><h2>Scaling through executable structure</h2></div>
+    <div class="abstract rv">
+      <span class="q">Can embodied intelligence scale through the construction and refinement of executable structure, rather than only through data, parameters and compute?</span>
+      Robotics already has strong tools: geometric reasoning, task and motion planning, SLAM, perception and feedback control. The bottleneck is the engineering needed to compose and adapt them for every new task. We present <b>HiPhys-RSI</b> (hierarchical physical recursive self-improvement), in which a <b>frozen VLM coding agent</b> automates that work. It examines execution feedback and videos, diagnoses failures and revises the code. Useful revisions are kept as reusable procedures and tools. The coding agent and its VLM backbone are never trained; all improvement is stored in executable procedures, tool compositions and structured knowledge. On the 2026 BEHAVIOR Challenge, the system ranks <b>first across all 100 BEHAVIOR-1K household tasks</b>, with a verified Q-score of <b>0.683</b> and a full-task success rate of <b>48.2%</b> on the hidden test instances.
     </div>
   </div>
 </section>
