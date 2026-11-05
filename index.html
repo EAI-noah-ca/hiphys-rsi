@@ -40,7 +40,7 @@ nav .right{justify-self:end}
 
 /* hero */
 .hero{text-align:center}
-.stage{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:96px 0 72px}
+.stage{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:110px 0 150px}
 .marquee{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:var(--mgap);--mgap:9px;--rowh:calc((100% - 3 * var(--mgap)) / 4);overflow:hidden}
 .mrow{height:var(--rowh);flex:none;overflow:visible}
 .mtrack{display:flex;height:100%;width:max-content;animation:mq var(--dur) linear infinite}
@@ -50,12 +50,18 @@ nav .right{justify-self:end}
   mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Crect x='0' y='0' width='96' height='100' rx='6'/%3E%3C/svg%3E");
   -webkit-mask-size:12.5% 100%;mask-size:12.5% 100%;-webkit-mask-repeat:repeat-x;mask-repeat:repeat-x}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (max-width:560px){.marquee{--mgap:6px}}
+@media (max-width:560px){.marquee{--mgap:6px}.stage{padding:96px 0 120px}.hero .stage .spec{padding:16px 8px}}
 .stage-veil{position:absolute;inset:0;backdrop-filter:blur(1.5px) saturate(.9);-webkit-backdrop-filter:blur(1.5px) saturate(.9)}
 /* dark hero */
 .stage{background:#0b0b0d}
 .stage-veil{background:radial-gradient(ellipse at center,rgba(8,8,10,.86) 0%,rgba(8,8,10,.70) 50%,rgba(8,8,10,.50) 100%)}
 .stage::after{background:linear-gradient(to bottom,rgba(255,255,255,0),#fff)}
+.hero .stage .specs{margin:44px auto 0;max-width:760px;border-color:rgba(255,255,255,.16);background:rgba(10,10,12,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:16px;border:1px solid rgba(255,255,255,.14)}
+.hero .stage .spec{border-color:rgba(255,255,255,.14);padding:22px 18px}
+.hero .stage .spec .k{color:#a1a1a6}
+.hero .stage .spec .v{color:#f5f5f7}
+.hero .stage .spec .v.red{color:#ff5a5f}
+.hero .stage .spec .v small{color:#a1a1a6}
 .hero .stage h1{color:#fff}
 .hero .stage h2,.stage .authors{color:#d2d2d7}
 .hero .stage .authors .aff{color:#a1a1a6}
@@ -67,7 +73,7 @@ nav .right{justify-self:end}
 nav.over{background:rgba(12,12,14,.6);border-color:transparent}
 nav.over .brand,nav.over ul a{color:#f5f5f7}
 nav.over .pill.fill{background:#f5f5f7;color:#111;border-color:#f5f5f7}
-.stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(to bottom,rgba(255,255,255,0),#fff);pointer-events:none}
+.stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(to bottom,rgba(255,255,255,0),#fff);pointer-events:none}
 .stage-in{position:relative;z-index:1}
 .stage-cap{position:absolute;z-index:2;left:0;right:0;bottom:22px;font-size:12px;color:var(--mute);padding:0 16px}
 .venue{display:inline-flex;align-items:center;gap:12px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
@@ -227,7 +233,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .rv.in{opacity:1;transform:none}
 .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
 .hero .a{opacity:0;transform:translateY(18px);animation:up 1s cubic-bezier(.2,.7,.2,1) forwards}
-.a1{animation-delay:.05s!important}.a2{animation-delay:.18s!important}.a3{animation-delay:.3s!important}.a4{animation-delay:.42s!important}.a5{animation-delay:.54s!important}
+.a1{animation-delay:.05s!important}.a2{animation-delay:.18s!important}.a3{animation-delay:.3s!important}.a4{animation-delay:.42s!important}.a5{animation-delay:.54s!important}.a6{animation-delay:.7s!important}
 @keyframes up{to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){
   .rv,.row,.hero .a{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
@@ -300,18 +306,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       <a class="pill line" href="#leaderboard">Leaderboard</a>
       <a class="pill line" href="#bibtex">BibTeX</a>
     </div>
+    <div class="specs a a6">
+      <div class="spec"><div class="k">Q-score (official)</div><div class="v red" data-count="0.683" data-dec="3">0.683</div></div>
+      <div class="spec"><div class="k">Full-task success</div><div class="v"><span data-count="48.2" data-dec="1">48.2</span><small>%</small></div></div>
+      <div class="spec"><div class="k">Q over 2nd place</div><div class="v"><span data-count="11" data-prefix="+">+11</span><small>%</small></div></div>
+    </div>
   </div>
   </div>
   <div class="heroimg rv">
     <div class="frame"><img id="heroFig" src="assets/fig/fig1.png" alt="Overview of the HiPhys-RSI framework: experience the task, design pipeline, analyze rollouts, iterative refinement; inference-time routing among pipelines and VLAs; per-task results versus the best VLA."></div>
     <p class="cap"><b>HiPhys-RSI overview.</b> Left: the agent acquires task experience and refines executable pipelines on training instances. Middle: at inference time it routes each task to a pipeline or a VLA policy. Right: per-task scores of our system compared with the best VLA.</p>
-  </div>
-  <div class="wrap">
-    <div class="specs rv">
-      <div class="spec"><div class="k">Q-score (official)</div><div class="v red" data-count="0.683" data-dec="3">0.683</div></div>
-      <div class="spec"><div class="k">Full-task success</div><div class="v"><span data-count="48.2" data-dec="1">48.2</span><small>%</small></div></div>
-      <div class="spec"><div class="k">Q over 2nd place</div><div class="v"><span data-count="11" data-prefix="+">+11</span><small>%</small></div></div>
-    </div>
   </div>
 </header>
 
@@ -659,8 +663,13 @@ function alignHero() {
   const h2 = stageIn.querySelector("h2"), au = stageIn.querySelector(".authors"), top = stageIn.getBoundingClientRect().top;
   const r1 = mrows[1].getBoundingClientRect(), r2 = mrows[2].getBoundingClientRect();
   const target = (r1.bottom + r2.top) / 2, mid = top + (h2.offsetTop + h2.offsetHeight + au.offsetTop) / 2;
-  stageIn.style.transform = `translateY(${Math.round(target - mid)}px)`;
+  let dy = target - mid;
+  // never push the numbers card into the fade at the bottom of the hero
+  const sp = stageIn.querySelector(".specs"), room = stageEl.getBoundingClientRect().bottom - 100 - (top + sp.offsetTop + sp.offsetHeight);
+  dy = Math.min(dy, room);
+  stageIn.style.transform = `translateY(${Math.round(dy)}px)`;
 }
+setTimeout(() => stageEl.querySelectorAll(".specs [data-count]").forEach(countUp), reduce ? 0 : 700);
 alignHero(); addEventListener("resize", alignHero); document.fonts && document.fonts.ready.then(alignHero);
 document.addEventListener("visibilitychange", () => { pageHidden = document.hidden; arm(); });
 
