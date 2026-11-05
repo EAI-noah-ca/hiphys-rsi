@@ -157,7 +157,9 @@ section.tint + section{padding-top:110px}
 .stance span{color:var(--accent)}
 
 /* peek carousel (cases) */
-.car{position:relative;overflow:hidden}
+.car{position:relative;overflow:hidden;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.car.dragging{cursor:grabbing}
+.car video,.car img{-webkit-user-drag:none;pointer-events:none}
 .track{display:flex;gap:24px;transition:transform .7s cubic-bezier(.2,.7,.2,1);will-change:transform}
 .slide{flex:0 0 min(76vw,780px);opacity:.35;transition:opacity .6s}
 .slide.on{opacity:1}
@@ -520,12 +522,13 @@ track.innerHTML = [0, 1, 2].map(() => CASES.map(slideHTML).join("")).join("");
 const slides = [...track.children], lnI = document.getElementById("lnI"), cnt = document.getElementById("cnt");
 slides.forEach((x, k) => { if (k < N || k >= 2 * N) x.setAttribute("aria-hidden", "true"); });
 const mod = (a, n) => ((a % n) + n) % n;
-let pos = N, si = 0;
+let pos = N, si = 0, curX = 0;
 function place(instant) {
   si = mod(pos, N);
   const s = slides[pos];
   if (instant) track.style.transition = "none";
-  track.style.transform = `translateX(${(car.clientWidth - s.offsetWidth) / 2 - s.offsetLeft}px)`;
+  curX = (car.clientWidth - s.offsetWidth) / 2 - s.offsetLeft;
+  track.style.transform = `translateX(${curX}px)`;
   if (instant) { void track.offsetWidth; track.style.transition = ""; }
   slides.forEach((x, k) => x.classList.toggle("on", k === pos));
   lnI.style.width = (100 / N) + "%"; lnI.style.left = (si * 100 / N) + "%";
@@ -552,9 +555,49 @@ function syncVids() {
   });
 }
 function step(d) { pos += d; place(); }
-let tx = null;
-car.addEventListener("touchstart", e => tx = e.touches[0].clientX, {passive: true});
-car.addEventListener("touchend", e => { if (tx === null) return; const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 40) { step(d < 0 ? 1 : -1); arm(); } tx = null; });
+/* drag / swipe (mouse, pen, touch): the track follows the finger, release moves by one or more slides */
+let drag = null, dragged = false;
+car.addEventListener("pointerdown", e => {
+  if (e.button !== 0) return;
+  drag = {x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId, horiz: null};
+  dragged = false;
+});
+car.addEventListener("pointermove", e => {
+  if (!drag || e.pointerId !== drag.id) return;
+  const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if (drag.horiz === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+    drag.horiz = Math.abs(dx) > Math.abs(dy);
+    if (drag.horiz) { car.setPointerCapture(e.pointerId); track.style.transition = "none"; car.classList.add("dragging"); clearTimeout(timer); }
+  }
+  if (drag.horiz) { dragged = true; track.style.transform = `translateX(${curX + dx}px)`; }
+});
+function endDrag(e) {
+  if (!drag || e.pointerId !== drag.id) return;
+  const d = drag; drag = null;
+  car.classList.remove("dragging");
+  if (!d.horiz) return;
+  track.style.transition = "";
+  const dx = e.clientX - d.x, v = dx / Math.max(1, performance.now() - d.t);
+  const w = slides[pos].offsetWidth + 24;
+  let n = Math.round(-dx / w);
+  if (n === 0 && (Math.abs(dx) > 50 || Math.abs(v) > .4)) n = dx < 0 ? 1 : -1;
+  if (n) step(n); else place();
+  arm();
+}
+car.addEventListener("pointerup", endDrag);
+car.addEventListener("pointercancel", endDrag);
+car.addEventListener("click", e => { if (dragged) { e.stopPropagation(); e.preventDefault(); dragged = false; } }, true);
+/* horizontal trackpad / shift-wheel */
+let wheelAcc = 0, wheelLock = 0;
+car.addEventListener("wheel", e => {
+  const dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : (e.shiftKey ? e.deltaY : 0);
+  if (!dx) return;
+  e.preventDefault();
+  const now = performance.now();
+  if (now < wheelLock) return;
+  wheelAcc += dx;
+  if (Math.abs(wheelAcc) > 60) { step(wheelAcc > 0 ? 1 : -1); arm(); wheelAcc = 0; wheelLock = now + 650; }
+}, {passive: false});
 /* autoplay: advance when the active clip ends; fill the active segment; pause on hover / off-screen / button */
 const lnB = document.getElementById("lnB"), playBtn = document.getElementById("play");
 let auto = !reduce, timer = null, visible = false, hovering = false, pageHidden = false;
