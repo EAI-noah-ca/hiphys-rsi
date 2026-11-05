@@ -133,6 +133,23 @@ section.tint + section{padding-top:110px}
 .find{border-top:2px solid var(--ink);padding-top:20px}
 .find h3{font-size:18px;font-weight:600;margin-bottom:6px}
 .find p{font-size:15px;color:var(--ink2)}
+.guards{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.guard{background:#fff;border-radius:18px;padding:26px}
+.guard .ic{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;margin-bottom:16px}
+.guard h3{font-size:17px;font-weight:600;margin-bottom:8px;line-height:1.3}
+.guard p{font-size:14.5px;color:var(--ink2);line-height:1.6}
+.gray{display:grid;grid-template-columns:1fr 1.5fr;gap:clamp(28px,4vw,64px);margin-top:64px;align-items:start}
+.gray h3{font-size:clamp(24px,2.6vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.gray .lead{font-size:16px;color:var(--ink2);margin-top:14px}
+.gcase{border-top:1px solid var(--line);padding:20px 0}
+.gcase:last-child{border-bottom:1px solid var(--line)}
+.gcase .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.gcase .t{font-weight:600;font-size:16px}
+.gcase .lbl{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:var(--bg2);color:var(--ink2)}
+.gcase .lbl.red{background:#fbeaea;color:var(--accent)}
+.gcase p{font-size:15px;color:var(--ink2);margin-top:8px}
+.stance{margin-top:56px;max-width:860px;margin-left:auto;margin-right:auto;text-align:center;font-size:clamp(19px,2.1vw,23px);line-height:1.5;color:var(--ink);font-weight:500;letter-spacing:-.01em}
+.stance span{color:var(--accent)}
 
 /* peek carousel (cases) */
 .car{position:relative;overflow:hidden}
@@ -148,7 +165,11 @@ section.tint + section{padding-top:110px}
 .slide p{font-size:15px;color:var(--ink2)}
 .carbar{display:flex;align-items:center;gap:20px;max-width:920px;margin:34px auto 0;padding:0 24px}
 .carbar .ln{flex:1;height:2px;background:var(--line);position:relative}
-.carbar .ln i{position:absolute;left:0;top:0;height:100%;background:var(--ink);transition:left .6s,width .6s}
+.carbar .ln i{position:absolute;left:0;top:0;height:100%;background:#c9ccd2;transition:left .6s,width .6s;overflow:hidden}
+.carbar .ln i b{position:absolute;left:0;top:0;height:100%;width:0;background:var(--ink)}
+.carbar .ln i b.run{width:100%;transition:width var(--dur,5.5s) linear}
+.carbar .ln i b.full{width:100%}
+.carbar .play{font-size:12px!important}
 .carbar .cnt{font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums;min-width:44px}
 .carbar button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:18px;cursor:pointer;color:var(--ink);transition:border-color .2s}
 .carbar button:hover{border-color:var(--ink)}
@@ -184,14 +205,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .spec:nth-child(n+3){border-top:1px solid var(--line)}
   .steps,.kv{grid-template-columns:repeat(2,1fr)}
   .kv div:nth-child(3){border-left:0;padding-left:0}
-  .pillars,.finds{grid-template-columns:1fr}
+  .pillars,.finds,.gray{grid-template-columns:1fr}
+  .guards{grid-template-columns:repeat(2,1fr)}
   .acc-wrap{grid-template-columns:1fr}
   .slide .c{grid-template-columns:1fr;gap:8px}
 }
 @media (max-width:560px){
   .wrap,.heroimg{padding:0 16px}
   body{font-size:16px}
-  .steps{grid-template-columns:1fr}
+  .steps,.guards{grid-template-columns:1fr}
   .row{grid-template-columns:22px 1fr 56px;gap:10px}
   .row .bar{grid-column:2/4;grid-row:2}
   .spec{padding:22px 10px}
@@ -214,6 +236,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     <li><a href="#method">Method</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#cases">Cases</a></li>
+    <li><a href="#integrity">Integrity</a></li>
   </ul>
   <div class="right"><a class="pill fill" href="#leaderboard">1st Place · BEHAVIOR 2026</a></div>
 </div><div id="progress"></div></nav>
@@ -337,7 +360,33 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     <div class="head rv"><div class="eyebrow">Case studies</div><h2>Strategies nobody demonstrated</h2><p>Through agent proposals and human-guided refinement, the pipelines adapt contact points, object configuration, action order and placement geometry to the scene.</p></div>
   </div>
   <div class="car rv" id="car"><div class="track" id="track"></div></div>
-  <div class="carbar"><span class="cnt" id="cnt">01 / 06</span><div class="ln"><i id="lnI"></i></div><button id="prev" aria-label="Previous case">‹</button><button id="next" aria-label="Next case">›</button></div>
+  <div class="carbar"><span class="cnt" id="cnt">01 / 06</span><div class="ln"><i id="lnI"><b id="lnB"></b></i></div><button id="play" class="play" aria-label="Pause autoplay">❚❚</button><button id="prev" aria-label="Previous case">‹</button><button id="next" aria-label="Next case">›</button></div>
+</section>
+
+<section id="integrity" class="tint">
+  <div class="wrap">
+    <div class="head rv"><div class="eyebrow">Evaluation integrity</div><h2>Is this benchmark hacking?</h2><p>A self-improving agent optimizing against a benchmark invites the question. These are the controls we used, and the gray-zone behaviours we found and report ourselves.</p></div>
+    <div class="guards">
+      <div class="guard rv"><div class="ic">1</div><h3>Hidden test never seen</h3><p>Each pipeline was built and refined on a fixed set of 10 training instances per task. The hidden test instances stayed inaccessible throughout development.</p></div>
+      <div class="guard rv d1"><div class="ic">2</div><h3>Official evaluator, same budget</h3><p>Scores come from the official evaluator with matched task-execution budgets across methods, so comparisons with VLA baselines are like for like.</p></div>
+      <div class="guard rv d2"><div class="ic">3</div><h3>Scored by the organizers</h3><p>The 0.683 Q-score and 48.2% success rate were produced by the organizers on the hidden test instances and appear on the verified leaderboard.</p></div>
+      <div class="guard rv d3"><div class="ic">4</div><h3>Frozen agent, readable code</h3><p>The coding agent and its VLM backbone are never trained. Pipeline improvements are stored as executable code, so every behaviour can be read and inspected.</p></div>
+    </div>
+    <div class="gray">
+      <div class="rv">
+        <h3>It transfers to unseen instances</h3>
+        <p class="lead">Most tasks score somewhat lower on the hidden evaluation than on development instances, but most of these drops stay below 0.2 Q, and several tasks hold or improve. The largest drops come from search-heavy tasks, where objects hidden in occluded places use up the time budget. Overall, the results indicate generalization across instances.</p>
+        <h3 style="margin-top:40px">Where the line blurs</h3>
+        <p class="lead">Under strong optimization, success predicates and partial rewards can stop tracking what a task intends. We looked for this and report two cases from our own analysis.</p>
+      </div>
+      <div class="rv d1">
+        <div class="gcase"><div class="top"><span class="t">Task 58 · stacking wood</span><span class="lbl red">Clear shortcut</span></div><p>The agent formed three separate pairs of logs instead of one woodpile. This satisfies the evaluator's condition that each log touches another, but not the intended stacking goal.</p></div>
+        <div class="gcase"><div class="top"><span class="t">Task 48 · canning food</span><span class="lbl">Ambiguous</span></div><p>The agent diced food inside the refrigerator, earning partial credit while the later transfer-to-bowl goals stayed unmet. The evaluator correctly records incomplete progress, and cutting in place can be a valid intermediate step, but it may also reflect a pull toward easy partial credit.</p></div>
+        <div class="gcase"><div class="top"><span class="t">Not hacking: departing from demos</span><span class="lbl">Legitimate</span></div><p>Grasping a pan by its rim or tipping a sprayer before grasping (see the case studies above) differs from the demonstrations but achieves the task as intended. Deviation from demonstrations alone does not establish hacking.</p></div>
+      </div>
+    </div>
+    <p class="stance rv">Stronger systems expose gaps in task specifications; <span>shortcuts we discover are reported so that evaluation criteria can evolve alongside the systems optimized against them.</span></p>
+  </div>
 </section>
 
 <section id="bibtex">
@@ -461,8 +510,28 @@ document.getElementById("next").onclick = () => go(si + 1);
 slides.forEach((s, k) => s.onclick = () => { if (k !== si) go(k); });
 let tx = null;
 car.addEventListener("touchstart", e => tx = e.touches[0].clientX, {passive: true});
-car.addEventListener("touchend", e => { if (tx === null) return; const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 40) go(si + (d < 0 ? 1 : -1)); tx = null; });
+car.addEventListener("touchend", e => { if (tx === null) return; const d = e.changedTouches[0].clientX - tx; if (Math.abs(d) > 40) { go(si + (d < 0 ? 1 : -1)); if (typeof arm === 'function') arm(); } tx = null; });
 place();
+/* autoplay: advance every DUR ms, fill the active segment, pause on hover / off-screen / button */
+const DUR = 5500, lnB = document.getElementById("lnB"), playBtn = document.getElementById("play");
+let auto = !reduce, timer = null, visible = false, hovering = false, pageHidden = false;
+lnB.parentElement.parentElement.style.setProperty("--dur", DUR + "ms");
+function arm() {
+  clearTimeout(timer); lnB.classList.remove("run", "full"); void lnB.offsetWidth;
+  if (!(auto && visible && !hovering && !pageHidden)) { lnB.classList.add("full"); return; }
+  lnB.classList.add("run");
+  timer = setTimeout(() => { si = (si + 1) % slides.length; place(); arm(); }, DUR);
+}
+const goUser = i => { go(i); arm(); };
+document.getElementById("prev").onclick = () => goUser(si - 1);
+document.getElementById("next").onclick = () => goUser(si + 1);
+slides.forEach((s, k) => s.onclick = () => { if (k !== si) goUser(k); });
+playBtn.onclick = () => { auto = !auto; playBtn.textContent = auto ? "❚❚" : "▶"; playBtn.setAttribute("aria-label", auto ? "Pause autoplay" : "Start autoplay"); arm(); };
+if (reduce) { playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "Start autoplay"); }
+car.addEventListener("mouseenter", () => { hovering = true; arm(); });
+car.addEventListener("mouseleave", () => { hovering = false; arm(); });
+new IntersectionObserver(es => { visible = es[0].isIntersecting; arm(); }, {threshold: .35}).observe(car);
+document.addEventListener("visibilitychange", () => { pageHidden = document.hidden; arm(); });
 
 /* nav, progress, active link, hero figure scale */
 const nav = document.getElementById("nav"), bar = document.getElementById("progress"), heroFig = document.getElementById("heroFig");
