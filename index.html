@@ -40,7 +40,7 @@ nav .right{justify-self:end}
 
 /* hero */
 .hero{text-align:center}
-.stage{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:110px 0 150px}
+.stage{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:96px 0 72px}
 .marquee{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:var(--mgap);--mgap:9px;--rowh:calc((100% - 3 * var(--mgap)) / 4);overflow:hidden}
 .mrow{height:var(--rowh);flex:none;overflow:visible}
 .mtrack{display:flex;height:100%;width:max-content;animation:mq var(--dur) linear infinite}
@@ -50,18 +50,12 @@ nav .right{justify-self:end}
   mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Crect x='0' y='0' width='96' height='100' rx='6'/%3E%3C/svg%3E");
   -webkit-mask-size:12.5% 100%;mask-size:12.5% 100%;-webkit-mask-repeat:repeat-x;mask-repeat:repeat-x}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (max-width:560px){.marquee{--mgap:6px}.stage{padding:96px 0 120px}.hero .stage .spec{padding:16px 8px}}
+@media (max-width:560px){.marquee{--mgap:6px}}
 .stage-veil{position:absolute;inset:0;backdrop-filter:blur(1.5px) saturate(.9);-webkit-backdrop-filter:blur(1.5px) saturate(.9)}
 /* dark hero */
 .stage{background:#0b0b0d}
 .stage-veil{background:radial-gradient(ellipse at center,rgba(8,8,10,.86) 0%,rgba(8,8,10,.70) 50%,rgba(8,8,10,.50) 100%)}
 .stage::after{background:linear-gradient(to bottom,rgba(255,255,255,0),#fff)}
-.hero .stage .specs{margin:44px auto 0;max-width:760px;border-color:rgba(255,255,255,.16);background:rgba(10,10,12,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:16px;border:1px solid rgba(255,255,255,.14)}
-.hero .stage .spec{border-color:rgba(255,255,255,.14);padding:22px 18px}
-.hero .stage .spec .k{color:#a1a1a6}
-.hero .stage .spec .v{color:#f5f5f7}
-.hero .stage .spec .v.red{color:#ff5a5f}
-.hero .stage .spec .v small{color:#a1a1a6}
 .hero .stage h1{color:#fff}
 .hero .stage h2,.stage .authors{color:#d2d2d7}
 .hero .stage .authors .aff{color:#a1a1a6}
@@ -113,6 +107,8 @@ section.tint + section{padding-top:110px}
 
 /* leaderboard */
 .lb{background:#fff;border-radius:22px;padding:clamp(22px,4vw,48px);max-width:1080px;margin:0 auto}
+.lb .lbspecs{margin:0 0 30px;max-width:none;border-top:0;border-bottom:1px solid var(--line)}
+.lb .lbspecs .spec{padding:4px 18px 26px}
 .lbtop{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap}
 .lbtop .t{font-size:15px;color:var(--mute)}
 .tog{display:inline-flex;background:var(--bg2);border-radius:999px;padding:3px}
@@ -306,11 +302,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       <a class="pill line" href="#leaderboard">Leaderboard</a>
       <a class="pill line" href="#bibtex">BibTeX</a>
     </div>
-    <div class="specs a a6">
-      <div class="spec"><div class="k">Q-score (official)</div><div class="v red" data-count="0.683" data-dec="3">0.683</div></div>
-      <div class="spec"><div class="k">Full-task success</div><div class="v"><span data-count="48.2" data-dec="1">48.2</span><small>%</small></div></div>
-      <div class="spec"><div class="k">Q over 2nd place</div><div class="v"><span data-count="11" data-prefix="+">+11</span><small>%</small></div></div>
-    </div>
   </div>
   </div>
   <div class="heroimg rv">
@@ -333,6 +324,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <div class="wrap">
     <div class="head rv"><div class="eyebrow">Official leaderboard</div><h2>0.683 Q, 11% ahead of second place</h2><p>2026 BEHAVIOR Challenge, 100 tasks, hidden test instances, official evaluator.</p></div>
     <div class="lb rv" id="lb">
+      <div class="specs lbspecs">
+      <div class="spec"><div class="k">Q-score (official)</div><div class="v red" data-count="0.683" data-dec="3">0.683</div></div>
+      <div class="spec"><div class="k">Full-task success</div><div class="v"><span data-count="48.2" data-dec="1">48.2</span><small>%</small></div></div>
+      <div class="spec"><div class="k">Q over 2nd place</div><div class="v"><span data-count="11" data-prefix="+">+11</span><small>%</small></div></div>
+    </div>
       <div class="lbtop">
         <span class="t">Top 6 verified entries</span>
         <div class="tog" role="tablist"><button class="on" data-k="q">Q-score</button><button data-k="sr">Success rate</button></div>
@@ -414,7 +410,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
 <section id="integrity" class="tint">
   <div class="wrap">
-    <div class="head rv"><div class="eyebrow">Benchmark hacking or reward shaping?</div><h2>Built without the hidden test, scored by the organizers</h2><p>A self-improving agent optimizing against a benchmark invites the question. These are the controls we used, and the gray-zone behaviours we found and report ourselves.</p></div>
+    <div class="head rv"><div class="eyebrow">Evaluation integrity</div><h2>Benchmark Hacking or Reward-shaping?</h2><p>A self-improving agent optimizing against a benchmark invites the question. These are the controls we used, and the gray-zone behaviours we found and report ourselves.</p></div>
     <div class="guards">
       <div class="guard rv"><div class="ic">1</div><h3>Hidden test never seen</h3><p>Each pipeline was built and refined on a fixed set of 10 training instances per task. The hidden test instances stayed inaccessible throughout development.</p></div>
       <div class="guard rv d1"><div class="ic">2</div><h3>Official evaluator, same budget</h3><p>Scores come from the official evaluator with matched task-execution budgets across methods, so comparisons with VLA baselines are like for like.</p></div>
@@ -665,11 +661,10 @@ function alignHero() {
   const target = (r1.bottom + r2.top) / 2, mid = top + (h2.offsetTop + h2.offsetHeight + au.offsetTop) / 2;
   let dy = target - mid;
   // never push the numbers card into the fade at the bottom of the hero
-  const sp = stageIn.querySelector(".specs"), room = stageEl.getBoundingClientRect().bottom - 100 - (top + sp.offsetTop + sp.offsetHeight);
+  const last = stageIn.querySelector(".links"), room = stageEl.getBoundingClientRect().bottom - 100 - (top + last.offsetTop + last.offsetHeight);
   dy = Math.min(dy, room);
   stageIn.style.transform = `translateY(${Math.round(dy)}px)`;
 }
-setTimeout(() => stageEl.querySelectorAll(".specs [data-count]").forEach(countUp), reduce ? 0 : 700);
 alignHero(); addEventListener("resize", alignHero); document.fonts && document.fonts.ready.then(alignHero);
 document.addEventListener("visibilitychange", () => { pageHidden = document.hidden; arm(); });
 
