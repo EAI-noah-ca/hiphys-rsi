@@ -17,6 +17,9 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font:400 17px/1.6 Inter,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit}
+h1,h2,h3,.closing h2,.abstract .q,.stance,.head p,.closing p,.cap{text-wrap:balance}
+p,.lbfoot span,.kv .k,.spec .k{text-wrap:pretty}
+.head p,.closing p,.cap{text-wrap:balance}
 img{display:block;max-width:100%}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
@@ -144,7 +147,7 @@ section.tint + section{padding-top:110px}
 .acc-wrap .main{aspect-ratio:3/2;display:flex;align-items:center;justify-content:center}
 .acc-wrap .main img{width:100%;height:100%;object-fit:contain;transition:opacity .35s}
 .swap{opacity:0!important}
-.acc-side h3{font-size:clamp(26px,3vw,34px);font-weight:600;letter-spacing:-.025em;line-height:1.15;margin-bottom:22px}
+.acc-side h3{font-size:clamp(22px,2.3vw,28px);font-weight:600;letter-spacing:-.025em;line-height:1.15;margin-bottom:22px}
 .acc{border-top:1px solid var(--line)}
 .acc-item{border-bottom:1px solid var(--line)}
 .acc-item button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;border:0;background:none;padding:17px 0;font:500 16px Inter,sans-serif;color:var(--mute);cursor:pointer;text-align:left;transition:color .2s}
@@ -178,7 +181,11 @@ section.tint + section{padding-top:110px}
 .gray{display:grid;grid-template-columns:1fr 1.5fr;gap:clamp(28px,4vw,64px);margin-top:64px;align-items:start}
 .gray h3{font-size:clamp(24px,2.6vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.2}
 .gray .lead{font-size:16px;color:var(--ink2);margin-top:14px}
-.gcase{border-top:1px solid var(--line);padding:20px 0}
+.gcase{border-top:1px solid var(--line);padding:20px 0;display:grid;grid-template-columns:minmax(160px,240px) 1fr;gap:20px;align-items:start}
+.gv{position:relative;border-radius:12px;overflow:hidden;background:#111;aspect-ratio:3/2}
+.gv video{width:100%;height:100%;object-fit:cover;display:block}
+.gv span{position:absolute;left:8px;bottom:8px;font-size:11px;color:#fff;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:99px}
+@media (max-width:560px){.gcase{grid-template-columns:1fr}}
 .gcase:last-child{border-bottom:1px solid var(--line)}
 .gcase .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
 .gcase .t{font-weight:600;font-size:16px}
@@ -427,9 +434,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         <p class="lead">Under strong optimization, success predicates and partial rewards can stop tracking what a task intends. We looked for this and report two cases from our own analysis.</p>
       </div>
       <div class="rv d1">
-        <div class="gcase"><div class="top"><span class="t">Task 58 · stacking wood</span><span class="lbl red">Clear shortcut</span></div><p>The agent formed three separate pairs of logs instead of one woodpile. This satisfies the evaluator's condition that each log touches another, but not the intended stacking goal.</p></div>
-        <div class="gcase"><div class="top"><span class="t">Task 48 · canning food</span><span class="lbl">Ambiguous</span></div><p>The agent diced food inside the refrigerator, earning partial credit while the later transfer-to-bowl goals stayed unmet. The evaluator correctly records incomplete progress, and cutting in place can be a valid intermediate step, but it may also reflect a pull toward easy partial credit.</p></div>
-        <div class="gcase"><div class="top"><span class="t">Not hacking: departing from demos</span><span class="lbl">Legitimate</span></div><p>Grasping a pan by its rim or tipping a sprayer before grasping (see the case studies above) differs from the demonstrations but achieves the task as intended. Deviation from demonstrations alone does not establish hacking.</p></div>
+        <div class="gcase"><div class="gv"><video src="assets/vid/hack58.mp4" poster="assets/vid/hack58.jpg" muted loop playsinline preload="none" aria-label="Task 58 rollout: logs end up as separate crossed pairs rather than one pile"></video><span>Instance 310 · 6×</span></div><div class="gt"><div class="top"><span class="t">Task 58 · stacking wood</span><span class="lbl red">Clear shortcut</span></div><p>The agent formed three separate pairs of logs instead of one woodpile. This satisfies the evaluator's condition that each log touches another, but not the intended stacking goal.</p></div></div>
+        <div class="gcase"><div class="gv"><video src="assets/vid/hack48.mp4" poster="assets/vid/hack48.jpg" muted loop playsinline preload="none" aria-label="Task 48 rollout: the robot dices food inside the refrigerator"></video><span>Instance 305 · 5×</span></div><div class="gt"><div class="top"><span class="t">Task 48 · canning food</span><span class="lbl">Ambiguous</span></div><p>The agent diced food inside the refrigerator, earning partial credit while the later transfer-to-bowl goals stayed unmet. The evaluator correctly records incomplete progress, and cutting in place can be a valid intermediate step, but it may also reflect a pull toward easy partial credit.</p></div></div>
+        <div class="gcase"><div class="gv"><video src="assets/vid/case96.mp4" poster="assets/vid/case96.jpg" muted loop playsinline preload="none" aria-label="Task 96 rollout: grasping a pan by its rim"></video><span>Instance 302 · 4×</span></div><div class="gt"><div class="top"><span class="t">Not hacking: departing from demos</span><span class="lbl">Legitimate</span></div><p>Grasping a pan by its rim or tipping a sprayer before grasping (see the case studies above) differs from the demonstrations but achieves the task as intended. Deviation from demonstrations alone does not establish hacking.</p></div></div>
       </div>
     </div>
     <p class="stance rv">Stronger systems expose gaps in task specifications; <span>shortcuts we discover are reported so that evaluation criteria can evolve alongside the systems optimized against them.</span></p>
@@ -649,6 +656,7 @@ car.addEventListener("mouseenter", () => { hovering = true; arm(); });
 car.addEventListener("mouseleave", () => { hovering = false; arm(); });
 new IntersectionObserver(es => { visible = carVisible = es[0].isIntersecting; syncVids(); arm(); }, {threshold: .35}).observe(car);
 place(true);
+document.querySelectorAll(".gv video").forEach(v => new IntersectionObserver(es => { if (es[0].isIntersecting && !reduce) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause(); }, {threshold: .3}).observe(v));
 const stageEl = document.getElementById("wall"), mvids = [...stageEl.querySelectorAll("video")];
 mvids.forEach(v => { v.playbackRate = 1.6; v.addEventListener("play", () => { v.playbackRate = 1.6; }); });
 if (reduce) mvids.forEach(v => { v.removeAttribute("autoplay"); v.pause(); });
