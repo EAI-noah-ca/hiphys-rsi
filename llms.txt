@@ -3,7 +3,7 @@
 > Team "The North Star" (Huawei Noah's Ark Lab, Embodied AI Team) placed 1st in the 2026 BEHAVIOR Challenge, the benchmark built on BEHAVIOR-1K / OmniGibson. Official verified result on the hidden test instances: Q-score 0.683 and full-task success 48.2% over all 100 household tasks, +0.067 Q (+11% relative) ahead of 2nd place.
 
 - Method: HiPhys-RSI (hierarchical physical recursive self-improvement). A frozen VLM coding agent builds, diagnoses and refines executable robot pipelines from classical perception, navigation, planning, IK and control modules; 91 tasks run agent-built pipelines and 9 run VLA skills; a router with policy cards picks the component per task.
-- Report title: "Scaling by Structure: What Forms Can Scaling Take in Embodied AI?" (tech report coming soon).
+- Report title: "Scaling by Structure: What Forms Can Scaling Take in Embodied AI?" Tech report PDF: https://behavior1k-champion.com/assets/HiPhys-RSI_tech_report.pdf
 - Official leaderboard: https://huggingface.co/spaces/behavior-1k/2026-challenge-leaderboard
 - Challenge: https://behavior.stanford.edu/challenge/
 
